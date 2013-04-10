@@ -1,0 +1,23 @@
+#!/usr/bin/env ruby
+
+require "superstacker"
+require "thor"
+require "json"
+
+module Cli
+
+  class SuperStacker < Thor
+
+    desc "stack DIR", "Compile the SuperStacker template in DIR."
+    def stack(dir)
+
+      stack = ::SuperStacker::Stack.new(dir)
+      puts JSON.pretty_generate(stack.compile)
+
+    end
+
+  end
+
+end
+
+Cli::SuperStacker.start(ARGV)
