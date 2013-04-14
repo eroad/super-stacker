@@ -12,3 +12,6 @@ resource "WebServer", "AWS::EC2::Instance" do
     SecurityGroupIds [ "sg-aaaabbbb" ]
   end
 end
+
+output "WebServerPublicDnsName", Fn::GetAtt("WebServer", "PrivateDnsName"),
+  "Public DNS name of the web server."

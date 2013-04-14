@@ -34,6 +34,14 @@ module SuperStacker
       @root["Parameters"][name] = opts
     end
 
+    def output(name, value, description = nil)
+      output = { "Value" => value }
+      output["Description"] = description unless description.nil?
+
+      @root["Outputs"] ||= {}
+      @root["Outputs"][name] = output
+    end
+
     def specfile
       File.join(File.expand_path(@dir), 'spec.rb')
     end

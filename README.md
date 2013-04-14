@@ -6,19 +6,25 @@ SuperStacker is a tool for writing cloudformation templates in a ruby DSL.
 The DSL is parsed and then output as JSON, ready for use with the
 CloudFormation toolchain.
 
-Syntax
-======
+Knowledge of CloudFormation templates and basic Ruby knowledge is assumed.
 
-We will go through basic syntax and language constructs here. Knowledge of
-CloudFormation templates and basic Ruby knowledge is assumed.
+Definitions
+===========
+
+Definitions are a declarative way of expressing a cloudformation template. They
+allow us to declare parameters, resources, outputs and the description in any
+order we want. SuperStacker handles compiling these and building the relevant
+JSON object.
 
 description
 -----------
 
 The description for a cloudformation stack is specified using the `description`
-keyword, as shown below:
+definition, as shown below:
 
 `description "description for this stack"`
+
+This definition is unique in that it should only be declared once.
 
 See [AWS documentation][1] for further information.
 
@@ -69,14 +75,105 @@ resources, types and properties.
 
 [3]: http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-template-resource-type-ref.html
 
+output
+------
+
+A output is some parameter that you want returned as a result of the stacks
+creation. These are often used as parameters for subsequent stacks.
+
+`output "SomeOutputKey", "SomeOutputValue", "SomeOutputDescription"`
+
+Please take a look at the [AWS documentation][4] for a more detailed description
+of outputs.
+
+[4]: http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/concept-outputs.html
+
+Shorthand Intrinsic Functions
+=============================
+
+All of the below functions are essentially shorthand for the AWS cloudformation
+functions, and are calculated server side once the template has been uploaded.
+
+Please see the [AWS documentation][5] for a full list of available functions.
+
+[5]: http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/intrinsic-function-reference.html
+
+Fn::Base64
+----------
+
+Returns the Base64 representation of the input string.
+
+`Fn::Base64("SomeString")`
+=> { "Fn::Base64" => "SomeString" }
+
+Please see the [AWS documentation][6] for further information.
+
+[6]: http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/intrinsic-function-reference-base64.html
+
+Fn::GetAtt
+----------
+
+Returns the value of an attribute from a resource in the template.
+
+`Fn::GetAtt("SomeResource", "SomeAttribute")`
+=> { "Fn::GetAtt" => [ "SomeAttribute", "SomeAttribute" ] }
+
+Please see the [AWS documentation][7] for further information.
+
+[7]: http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/intrinsic-function-reference-getatt.html
+
+Fn::GetAZs
+----------
+
+Returns an array that lists all Availability Zones for the specified region.
+
+If no region is specified, the region the stack was created in is used.
+
+`Fn::GetAZs`
+=> { "Fn::GetAZs" => "" }
+
+Please see the [AWS documentation][8] for further information.
+
+[8]: http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/intrinsic-function-reference-getavailabilityzones.html
+
+Fn::Join
+--------
+
+Appends a set of values into a single value, separated by the specified
+delimiter. If a delimiter is the empty string, the set of values are
+concatenated with no delimiter.
+
+`Fn::Join(" ", ["this", "is", "a", "list"]`
+=> { "Fn::Join" => [ " ", ["this", "is", "a", "list" ] ] }
+
+Please see the [AWS documentation][9] for further information.
+
+[9]: http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/intrinsic-function-reference-join.html
+
+Fn::Select
+----------
+
+Returns a single object from a list of objects by index.
+
+`Fn::Select("1", ["zero", "one", "two"])`
+=> { "Fn::Select" => [ "1", ["zero", "one", "two" ] ] }
+
+Please see the [AWS documentation][10] for further information.
+
+[10]: http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/intrinsic-function-reference-join.html
+
 Ref
 ---
 
 Ref is used to create a reference to another element of the CloudFormation
-template, is is essentially shorthand for the (rather verbose) JSON syntax.
+template.
 
 `Ref("SomeElement")`
 => { "Ref" => "SomeElement" }
+
+Please see the [AWS documentation][11] for further information.
+
+[11]: http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/intrinsic-function-reference-ref.html
 
 Examples
 ========
