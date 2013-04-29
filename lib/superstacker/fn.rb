@@ -4,6 +4,10 @@ module Fn
     { "Fn::Base64" => string }
   end
 
+  def self.FindInMap(map, key, value)
+    { "Fn::FindInMap" => [ map, key, value ] }
+  end
+
   def self.GetAtt(resource_name, attribute_name)
     { "Fn::GetAtt" => [ resource_name, attribute_name ] }
   end

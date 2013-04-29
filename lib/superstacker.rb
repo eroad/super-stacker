@@ -1,4 +1,4 @@
-require "superstacker/resource"
+require "superstacker/primitives"
 require "superstacker/fn"
 require "pp"
 
@@ -25,6 +25,13 @@ module SuperStacker
 
       @root["Resources"] ||= {}
       @root["Resources"][res.name] = res
+    end
+
+    def mapping(name, &block)
+      map = Mapping.new(name, &block)
+
+      @root["Mappings"] ||= {}
+      @root["Mappings"][map.name] = map
     end
 
     def parameter(name, opts = {})
