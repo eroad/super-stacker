@@ -7,7 +7,9 @@ module SuperStacker
 
     def initialize(dir)
       @dir = dir
-      @root = {}
+      @root = {
+        "AWSTemplateFormatVersion" => "2010-09-09"
+      }
     end
 
     def compile
