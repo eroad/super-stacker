@@ -1,8 +1,13 @@
 require 'superstacker/primitives'
+require 'superstacker/aws_functions'
+
+include SuperStacker::Primitives
 
 module SuperStacker
   module Template
     class Template
+      include SuperStacker::AwsFunctions
+
       AWSTemplateFormatVersion = "2010-09-09"
 
       def initialize(spec)

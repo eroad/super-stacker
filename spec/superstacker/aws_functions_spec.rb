@@ -1,4 +1,5 @@
-require 'superstacker/fn'
+require 'superstacker/aws_functions'
+include SuperStacker::AwsFunctions
 
 describe Fn do
   it 'returns a CloudFormation Fn::Base64 object' do

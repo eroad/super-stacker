@@ -1,6 +1,12 @@
 require 'superstacker/template'
 include SuperStacker::Template
 
+describe Template do
+  it 'should include the aws_functions module' do
+    Template.included_modules.include? SuperStacker::AwsFunctions
+  end
+end
+
 describe Template, 'when compiled' do
   context 'with no declarations' do
     before(:each) do
