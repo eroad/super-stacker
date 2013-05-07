@@ -20,9 +20,9 @@ describe 'cli' do
   context 'when the examples are compiled' do
     it 'should match our known good output' do
       Dir.glob('examples/*').each do |example|
-        output = superstacker "stack #{example}"
+        output = superstacker "template compile #{example}"
 
-        known_file = File.join(example, 'spec.json')
+        known_file = File.join(example, 'template.json')
         known_output = File.open(known_file) { |f| f.read }
 
         expect(output).to eq(known_output)

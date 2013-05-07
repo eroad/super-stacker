@@ -5,16 +5,24 @@ require 'thor'
 require 'json'
 
 module Cli
+  class Template < Thor
+
+    desc 'compile DIR', 'Compile the SuperStacker template in DIR.'
+    def compile(dir)
+      template_file = File.join(File.expand_path(dir), 'template.rb')
+      template = File.open(template_file) { |f| f.read }
+
+      ss_template = ::SuperStacker::Template::Template.new(template)
+      puts JSON.pretty_generate(ss_template.compile)
+    end
+
+  end
+
   class SuperStacker < Thor
 
-    desc 'stack DIR', 'Compile the SuperStacker template in DIR.'
-    def stack(dir)
-      specfile = File.join(File.expand_path(dir), 'spec.rb')
-      spec = File.open(specfile) { |f| f.read }
-
-      template = ::SuperStacker::Template::Template.new(spec)
-      puts JSON.pretty_generate(template.compile)
-    end
+    desc 'template SUBCOMMAND',
+      'superstacker commands related to cloudformation templates'
+    subcommand :template, Template
 
   end
 end
