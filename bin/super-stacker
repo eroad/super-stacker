@@ -1,23 +1,22 @@
 #!/usr/bin/env ruby
 
-require "superstacker"
-require "thor"
-require "json"
+require 'superstacker/template'
+require 'thor'
+require 'json'
 
 module Cli
-
   class SuperStacker < Thor
 
-    desc "stack DIR", "Compile the SuperStacker template in DIR."
+    desc 'stack DIR', 'Compile the SuperStacker template in DIR.'
     def stack(dir)
+      specfile = File.join(File.expand_path(dir), 'spec.rb')
+      spec = File.open(specfile) { |f| f.read }
 
-      stack = ::SuperStacker::Stack.new(dir)
-      puts JSON.pretty_generate(stack.compile)
-
+      template = ::SuperStacker::Template::Template.new(spec)
+      puts JSON.pretty_generate(template.compile)
     end
 
   end
-
 end
 
 Cli::SuperStacker.start(ARGV)
