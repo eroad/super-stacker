@@ -28,8 +28,13 @@ module SuperStacker
 
     end
 
-    def Ref(logicalName)
-      { 'Ref' => logicalName }
-    end
   end
+end
+
+# TODO: Figure out how to get this into the AwsFunctions module.
+# For some reason this function isn't available within blocks in templates
+# when included into the Template class. I'm defining it at the base of the
+# module namespace as a work around as this seems to get around the issue.
+def Ref(logicalName)
+  { 'Ref' => logicalName }
 end
