@@ -1,0 +1,56 @@
+{
+  "AWSTemplateFormatVersion": "2010-09-09",
+  "Description": "Creates a single EC2 Instance.",
+  "Mappings": {
+    "RegionMap": {
+      "FakeRegion": {
+        "AMI": "ami-aaaabbbb"
+      },
+      "us-west-1": {
+        "hyphenated-key": "somevalue",
+        "AMI": "ami-aaaabbbb"
+      }
+    }
+  },
+  "Parameters": {
+    "InstanceType": {
+      "Type": "String"
+    },
+    "RegionId": {
+      "Type": "String"
+    }
+  },
+  "Resources": {
+    "WebServer": {
+      "Type": "AWS::EC2::Instance",
+      "Properties": {
+        "AvailabilityZone": "us-west-2a",
+        "Ref": "InstanceType",
+        "ImageId": {
+          "Fn::FindInMap": [
+            "RegionMap",
+            "RegionId",
+            "AMI"
+          ]
+        },
+        "KeyName": "keyname",
+        "InstanceType": "InstanceType",
+        "SubnetId": "subnet-aaaabbbb",
+        "SecurityGroupIds": [
+          "sg-aaaabbbb"
+        ]
+      }
+    }
+  },
+  "Outputs": {
+    "WebServerPublicDnsName": {
+      "Value": {
+        "Fn::GetAtt": [
+          "WebServer",
+          "PrivateDnsName"
+        ]
+      },
+      "Description": "Public DNS name of the web server."
+    }
+  }
+}
