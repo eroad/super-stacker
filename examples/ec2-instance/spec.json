@@ -1,14 +1,13 @@
 {
   "AWSTemplateFormatVersion": "2010-09-09",
-  "Description": "Creates a single EC2 Instance.",
+  "Description": "Creates a single EC2 Instance and Security Group.",
   "Mappings": {
     "RegionMap": {
-      "FakeRegion": {
-        "AMI": "ami-aaaabbbb"
-      },
       "us-west-1": {
-        "hyphenated-key": "somevalue",
-        "AMI": "ami-aaaabbbb"
+        "AMI": "ami-2928076c"
+      },
+      "us-west-2": {
+        "AMI": "ami-09e27439"
       }
     }
   },
@@ -18,26 +17,46 @@
     },
     "RegionId": {
       "Type": "String"
+    },
+    "KeyName": {
+      "Type": "String"
     }
   },
   "Resources": {
+    "WebServerSecurityGroup": {
+      "Type": "AWS::EC2::SecurityGroup",
+      "Properties": {
+        "GroupDescription": "Security Group for the WebServer instance.",
+        "SecurityGroupIngress": [
+          {
+            "IpProtocol": "tcp",
+            "FromPort": "22",
+            "ToPort": "22",
+            "CidrIp": "0.0.0.0/0"
+          }
+        ]
+      }
+    },
     "WebServer": {
       "Type": "AWS::EC2::Instance",
       "Properties": {
-        "AvailabilityZone": "us-west-2a",
-        "Ref": "InstanceType",
         "ImageId": {
           "Fn::FindInMap": [
             "RegionMap",
-            "RegionId",
+            "us-west-2",
             "AMI"
           ]
         },
-        "KeyName": "keyname",
-        "InstanceType": "InstanceType",
-        "SubnetId": "subnet-aaaabbbb",
+        "KeyName": {
+          "Ref": "KeyName"
+        },
+        "InstanceType": {
+          "Ref": "InstanceType"
+        },
         "SecurityGroupIds": [
-          "sg-aaaabbbb"
+          {
+            "Ref": "WebServerSecurityGroup"
+          }
         ]
       }
     }

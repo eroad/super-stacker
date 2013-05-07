@@ -1,29 +1,36 @@
-description "Creates a single EC2 Instance."
+description 'Creates a single EC2 Instance and Security Group.'
 
-mapping "RegionMap" do
-  FakeRegion do
-    AMI 'ami-aaaabbbb'
-  end
-
+mapping 'RegionMap' do
   escape 'us-west-1' do
-    escape 'hyphenated-key', 'somevalue'
-    AMI 'ami-aaaabbbb'
+    AMI 'ami-2928076c'
+  end
+
+  escape 'us-west-2' do
+    AMI 'ami-09e27439'
   end
 end
 
-parameter "InstanceType", "Type" => "String"
-parameter "RegionId", "Type" => "String"
+parameter 'InstanceType', 'Type' => 'String'
+parameter 'RegionId', 'Type' => 'String'
+parameter 'KeyName', 'Type' => 'String'
 
-resource "WebServer", "AWS::EC2::Instance" do
+resource 'WebServerSecurityGroup', 'AWS::EC2::SecurityGroup' do
   Properties do
-    AvailabilityZone "us-west-2a"
-    ImageId Fn::FindInMap("RegionMap", Ref("RegionId"), "AMI")
-    KeyName "keyname"
-    InstanceType Ref("InstanceType")
-    SubnetId "subnet-aaaabbbb"
-    SecurityGroupIds [ "sg-aaaabbbb" ]
+    GroupDescription 'Security Group for the WebServer instance.'
+    SecurityGroupIngress [
+      { 'IpProtocol' => 'tcp', 'FromPort' => '22', 'ToPort' => '22', 'CidrIp' => '0.0.0.0/0' }
+    ]
   end
 end
 
-output "WebServerPublicDnsName", Fn::GetAtt("WebServer", "PrivateDnsName"),
-  "Public DNS name of the web server."
+resource 'WebServer', 'AWS::EC2::Instance' do
+  Properties do
+    ImageId Fn::FindInMap('RegionMap', 'us-west-2', 'AMI')
+    KeyName Ref('KeyName')
+    InstanceType Ref('InstanceType')
+    SecurityGroupIds [ Ref('WebServerSecurityGroup') ]
+  end
+end
+
+output 'WebServerPublicDnsName', Fn::GetAtt('WebServer', 'PrivateDnsName'),
+  'Public DNS name of the web server.'
