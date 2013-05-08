@@ -10,15 +10,15 @@ module SuperStacker
 
       AWSTemplateFormatVersion = "2010-09-09"
 
-      def initialize(spec)
-        @spec = spec
+      def initialize(template)
+        @template = template
         @root = {
           "AWSTemplateFormatVersion" => AWSTemplateFormatVersion
         }
       end
 
       def compile
-        instance_eval(@spec, 'spec.rb', 0)
+        instance_eval(@template, 'template.rb', 0)
         @root
       end
 
