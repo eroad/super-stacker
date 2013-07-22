@@ -249,3 +249,15 @@ To check the output of a sample do something like:
 
 `super-stacker stack examples/ec2-instance/`
 
+Configuration
+=============
+
+Interfacing with the AWS api requires an access key, SuperStacker expects this
+file to be at `~/.awscli` in the following format:
+
+```
+[default]
+aws_access_key_id = XXXXXXXXXXXXXXXXXXXX
+aws_secret_access_key = XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+region = ap-southeast-2
+```

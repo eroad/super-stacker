@@ -34,7 +34,7 @@ describe 'cli' do
     it 'should match our known good output' do
       a = 'spec/fixtures/compare/a'
       b = 'spec/fixtures/compare/b'
-      output = superstacker "template compare #{a} #{b}"
+      output = superstacker "stack compare #{a} #{b}"
 
       known_output = File.read('spec/fixtures/compare/known_good_output')
 
