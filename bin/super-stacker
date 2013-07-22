@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 
-require 'superstacker/template'
+require 'superstacker'
 require 'thor'
 require 'json'
 
@@ -16,6 +16,10 @@ module Cli
       puts JSON.pretty_generate(ss_template.compile)
     end
 
+    desc 'compare A B', 'Compare stacks A and B and report on differences.'
+    def compare(a, b)
+      puts ::SuperStacker::AWS.load_stack('scratch-vpc')
+    end
   end
 
   class SuperStacker < Thor

@@ -1,5 +1,5 @@
 module SuperStacker
-  module AwsFunctions
+  module CloudformationFunctions
     module Fn
 
       def self.Base64(string)

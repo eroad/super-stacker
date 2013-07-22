@@ -1,12 +1,12 @@
 require 'superstacker/primitives'
-require 'superstacker/aws_functions'
+require 'superstacker/cloudformation_functions'
 
 include SuperStacker::Primitives
 
 module SuperStacker
   module Template
     class Template
-      include SuperStacker::AwsFunctions
+      include SuperStacker::CloudformationFunctions
 
       AWSTemplateFormatVersion = "2010-09-09"
 

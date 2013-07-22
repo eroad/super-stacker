@@ -2,8 +2,8 @@ require 'superstacker/template'
 include SuperStacker::Template
 
 describe Template do
-  it 'should include the aws_functions module' do
-    Template.included_modules.include? SuperStacker::AwsFunctions
+  it 'should include the cloudformation_functions module' do
+    Template.included_modules.include? SuperStacker::CloudformationFunctions
   end
 end
 
