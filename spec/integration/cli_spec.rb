@@ -4,7 +4,7 @@ end
 
 describe 'cli' do
   context 'when called with no arguments' do
-    it 'should return 1' do
+    it 'should return 0' do
       superstacker
 
       expect($?).to eq(0)
