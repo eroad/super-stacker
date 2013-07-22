@@ -1,0 +1,23 @@
+----------------------------------- TEMPLATE -----------------------------------
+ {
+   "AWSTemplateFormatVersion": "2010-09-09",
+   "Parameters": {
+[31m-    "TestParemeter": {[0m
+[32m+    "TestParemeter2": {[0m
+       "Type": "String"
+     }
+   },
+   "Resources": {
+[31m-    "TestResource": {[0m
+[32m+    "TestResource2": {[0m
+       "Type": "SomeType"
+     }
+   }
+ }
+---------------------------------- PARAMETERS ----------------------------------
+ {
+[31m-  "Left": "Left",[0m
+[32m+  "Right": "Right",[0m
+   "SomeParam": "SomeValue"
+ }
+\ No newline at end of file

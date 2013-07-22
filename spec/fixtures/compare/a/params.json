@@ -1,0 +1,10 @@
+[
+  {
+    "parameter_key": "SomeParam",
+    "parameter_value": "SomeValue"
+  },
+  {
+    "parameter_key": "Left",
+    "parameter_value": "Left"
+  }
+]

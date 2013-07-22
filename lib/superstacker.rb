@@ -1,5 +1,5 @@
-require 'superstacker/aws'
 require 'superstacker/template'
+require 'superstacker/stack'
 require 'aws-sdk'
 require 'iniparse'
 

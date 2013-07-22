@@ -2,23 +2,29 @@
 
 require 'superstacker'
 require 'thor'
-require 'json'
+require 'diffy'
 
 module Cli
   class Template < Thor
 
     desc 'compile DIR', 'Compile the SuperStacker template in DIR.'
     def compile(dir)
-      template_file = File.join(File.expand_path(dir), 'template.rb')
-      template = File.open(template_file) { |f| f.read }
-
-      ss_template = ::SuperStacker::Template::Template.new(template)
-      puts JSON.pretty_generate(ss_template.compile)
+      stack = ::SuperStacker::Stack.stack_from_dir(dir)
+      puts stack[:template]
     end
 
     desc 'compare A B', 'Compare stacks A and B and report on differences.'
     def compare(a, b)
-      puts ::SuperStacker::AWS.load_stack('scratch-vpc')
+      sa = ::SuperStacker::Stack::resolve_stack(a)
+      sb = ::SuperStacker::Stack::resolve_stack(b)
+
+      puts '-' * 35 + ' TEMPLATE ' + '-' * 35
+      puts Diffy::Diff.new(sa[:template], sb[:template]).to_s(:color)
+
+      unless sa[:params].nil? || sb[:params].nil?
+        puts '-' * 34 + ' PARAMETERS ' + '-' * 34
+        puts Diffy::Diff.new(sa[:params], sb[:params]).to_s(:color)
+      end
     end
   end
 

@@ -29,4 +29,16 @@ describe 'cli' do
       end
     end
   end
+
+  context 'when comparing two stacks' do
+    it 'should match our known good output' do
+      a = 'spec/fixtures/compare/a'
+      b = 'spec/fixtures/compare/b'
+      output = superstacker "template compare #{a} #{b}"
+
+      known_output = File.read('spec/fixtures/compare/known_good_output')
+
+      expect(output).to eq(known_output)
+    end
+  end
 end
