@@ -1,53 +1,5 @@
 #!/usr/bin/env ruby
 
-require 'superstacker'
-require 'thor'
-require 'diffy'
+require 'superstacker/cli'
 
-module Cli
-  class Template < Thor
-
-    desc 'compile DIR', 'Compile the SuperStacker template in DIR.'
-    def compile(dir)
-      stack = ::SuperStacker::Stack.stack_from_dir(dir)
-      puts stack[:template]
-    end
-  end
-
-  class Stack < Thor
-    desc 'compare A B', 'Compare stacks A and B and report of differences.'
-    long_desc <<-DESC
-      You can specify a local superstacker stack template by providing the path
-      to the directory as the argument, or a running stack by providing the a
-      cloudformation url like 'cfm://stack-name'.
-
-      If a params.json file is found in dir, this will be loaded as the stacks
-      parameters and compared to the other stack.
-    DESC
-    def compare(a, b)
-      sa = ::SuperStacker::Stack::resolve_stack(a)
-      sb = ::SuperStacker::Stack::resolve_stack(b)
-
-      puts '-' * 35 + ' TEMPLATE ' + '-' * 35
-      puts Diffy::Diff.new(sa[:template], sb[:template]).to_s(:color)
-
-      unless sa[:params].nil? || sb[:params].nil?
-        puts '-' * 34 + ' PARAMETERS ' + '-' * 34
-        puts Diffy::Diff.new(sa[:params], sb[:params]).to_s(:color)
-      end
-    end
-  end
-
-  class SuperStacker < Thor
-
-    desc 'template SUBCOMMAND',
-      'superstacker commands related to cloudformation templates'
-    subcommand :template, Template
-
-    desc 'stack SUBCOMMAND', 'superstacker commands related to entire stacks'
-    subcommand :stack, Stack
-
-  end
-end
-
-Cli::SuperStacker.start(ARGV)
+SuperStacker::Cli::Root.start(ARGV)
