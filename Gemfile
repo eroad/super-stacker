@@ -7,5 +7,7 @@ end
 
 group :development do
   gem 'pry'
+  gem 'pry-nav'
   gem 'rake'
+  gem 'ipaddress'
 end

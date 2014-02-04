@@ -2,4 +2,4 @@
 
 require 'superstacker/cli'
 
-SuperStacker::Cli::Root.start(ARGV)
+SuperStacker::Cli.start(ARGV)

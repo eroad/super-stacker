@@ -1,28 +1,28 @@
-require 'superstacker/template'
-include SuperStacker::Template
+require 'superstacker/template_dsl'
+include SuperStacker
 
-describe Template do
+describe TemplateDSL do
   it 'should include the cloudformation_functions module' do
-    Template.included_modules.include? SuperStacker::CloudformationFunctions
+    TemplateDSL.included_modules.include? SuperStacker::CloudformationFunctions
   end
 end
 
-describe Template, 'when compiled' do
+describe TemplateDSL, 'when compiled' do
   context 'with no declarations' do
     before(:each) do
-      @template = Template.new('').compile
+      @template = TemplateDSL.new('').compile
     end
 
     it 'should have a default template version' do
       expect(@template['AWSTemplateFormatVersion']).to \
-        eq(Template::AWSTemplateFormatVersion)
+        eq(TemplateDSL::AWSTemplateFormatVersion)
     end
   end
 
   context 'with a description declared' do
     before(:each) do
       @description = 'test'
-      @template = Template.new("description '#{@description}'").compile
+      @template = TemplateDSL.new("description '#{@description}'").compile
     end
 
     it 'should have a description' do
@@ -34,7 +34,7 @@ describe Template, 'when compiled' do
     before(:each) do
       @resource = double('resource', :name => 'name', :type => 'type')
       Resource.stub(:new) { @resource }
-      @template = Template.new('resource "name", "type"').compile
+      @template = TemplateDSL.new('resource "name", "type"').compile
     end
 
     it 'should add the resource to the resource collection' do
@@ -46,7 +46,7 @@ describe Template, 'when compiled' do
     before(:each) do
       @mapping = double('mapping', :name => 'name')
       Mapping.stub(:new) { @mapping }
-      @template = Template.new('mapping "name"').compile
+      @template = TemplateDSL.new('mapping "name"').compile
     end
 
     it 'should add the mapping to the mapping collection' do
@@ -56,7 +56,7 @@ describe Template, 'when compiled' do
 
   context 'with a parameter declared' do
     before(:each) do
-      @template = Template.new('parameter "name", "Type" => "String"').compile
+      @template = TemplateDSL.new('parameter "name", "Type" => "String"').compile
     end
 
     it 'should add the parameter to the parameters collection' do
@@ -66,7 +66,7 @@ describe Template, 'when compiled' do
 
   context 'with a output declared' do
     before(:each) do
-      @template = Template.new('output "name", "value"').compile
+      @template = TemplateDSL.new('output "name", "value"').compile
     end
 
     it 'should add the output to the outputs collection' do
