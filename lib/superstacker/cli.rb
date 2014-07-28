@@ -100,7 +100,7 @@ module SuperStacker
 
       parents = StackCollection.new([])
       build_order.each do |stack|
-        name = options[:prefix].nil? ? stack.name : prefix+stack.name
+        name = options[:prefix].nil? ? stack.name : options[:prefix]+stack.name
         say "provisioning stack: #{name}"
 
         load_params(stack, known_params, parents)

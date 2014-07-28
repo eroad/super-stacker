@@ -50,7 +50,7 @@ module SuperStacker
       cfm = AWS::CloudFormation.new
 
       new_stack = cfm.stacks.create(name, stack.entity.template,
-                                    {:parameters => stack.entity.parameters})
+                                    {:parameters => stack.entity.parameters, :capabilities => ['CAPABILITY_IAM']})
 
       StatusWatcher.new(new_stack)
     end
@@ -60,7 +60,7 @@ module SuperStacker
       cfm_stack = cfm.stacks[name]
 
       cfm_stack.update({ :template => stack.entity.template,
-                         :parameters => stack.entity.parameters })
+                         :parameters => stack.entity.parameters, :capabilities => ['CAPABILITY_IAM']})
 
       StatusWatcher.new(cfm_stack)
     end
