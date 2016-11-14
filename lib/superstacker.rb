@@ -1,6 +1,6 @@
 require 'superstacker/template_dsl'
 require 'superstacker/stack'
-require 'aws-sdk-v1'
+require 'aws-sdk'
 
 module SuperStacker
   module_function

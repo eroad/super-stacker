@@ -1,4 +1,4 @@
-require 'aws-sdk-v1'
+require 'aws-sdk'
 require 'json'
 
 module SuperStacker
