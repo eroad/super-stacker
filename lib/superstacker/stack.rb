@@ -1,4 +1,4 @@
-require 'aws-sdk'
+require 'aws-sdk-v1'
 require 'json'
 require 'superstacker/template_dsl'
 require 'superstacker/parameters_dsl'
