@@ -12,7 +12,7 @@ describe 'super-stacker cli' do
     it 'should output the help message' do
       output = `bundle exec super-stacker`
 
-      output.should =~ /^Tasks:/
+      expect(output).to match(/^Tasks:/)
     end
   end
 end

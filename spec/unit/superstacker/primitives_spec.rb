@@ -39,7 +39,7 @@ describe Resource do
   end
 
   it 'correctly extends DeclarativeHash' do
-    expect(Resource < DeclarativeHash).to be_true
+    expect(Resource < DeclarativeHash).to be_truthy
 
     resource = Resource.new 'name', 'type' do
       key 'value'
@@ -58,7 +58,7 @@ describe Mapping do
   end
 
   it 'correctly extends DeclarativeHash' do
-    expect(Mapping < DeclarativeHash).to be_true
+    expect(Mapping < DeclarativeHash).to be_truthy
 
     resource = Mapping.new 'name' do
       key 'value'

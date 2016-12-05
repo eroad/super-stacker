@@ -33,7 +33,7 @@ describe TemplateDSL, 'when compiled' do
   context 'with a resource declared' do
     before(:each) do
       @resource = double('resource', :name => 'name', :type => 'type')
-      Resource.stub(:new) { @resource }
+      allow(Resource).to receive(:new).and_return(@resource)
       @template = TemplateDSL.new('resource "name", "type"').compile
     end
 
@@ -45,7 +45,7 @@ describe TemplateDSL, 'when compiled' do
   context 'with a mapping declared' do
     before(:each) do
       @mapping = double('mapping', :name => 'name')
-      Mapping.stub(:new) { @mapping }
+      allow(Mapping).to receive(:new).and_return(@mapping)
       @template = TemplateDSL.new('mapping "name"').compile
     end
 

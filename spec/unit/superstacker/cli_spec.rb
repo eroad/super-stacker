@@ -6,7 +6,7 @@ describe SuperStacker::Cli do
       let(:url) { 'cfm://test' }
       
       it 'calls Stack.from_aws' do
-        Stack.should_receive(:from_aws).with('test')
+        expect(Stack).to receive(:from_aws).with('test')
         subject.stack_from_url(url)
       end
     end
@@ -14,7 +14,7 @@ describe SuperStacker::Cli do
     context 'given a directory' do
       let(:url) { 'some/path/' }
       it 'calls Stack.from_dir' do
-        Stack.should_receive(:from_dir)
+        expect(Stack).to receive(:from_dir)
         subject.stack_from_url(url)
       end
     end
