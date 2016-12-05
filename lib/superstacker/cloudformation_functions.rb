@@ -26,6 +26,14 @@ module SuperStacker
         { 'Fn::Select' => [ index, list ] }
       end
 
+      def self.Sub(string, variables=nil)
+        if variables.nil?
+          { 'Fn::Sub' => string }
+        else
+          { 'Fn::Sub' => [string, variables] }
+        end
+      end
+
     end
 
   end

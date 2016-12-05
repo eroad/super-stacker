@@ -27,6 +27,14 @@ describe Fn do
   it 'returns a CloudFormation Fn::Base64 object' do
     expect(Fn.Select('0', [0,1])).to eq({ 'Fn::Select' => ['0', [0,1]] })
   end
+
+  it 'returns a CloudFormation Fn::Sub object' do
+    expect(Fn.Sub('${AWS::StackName}-SubnetID')).to eq({ 'Fn::Sub' => '${AWS::StackName}-SubnetID' })
+  end
+
+  it 'returns a CloudFormation Fn::Sub object' do
+    expect(Fn.Sub('www.${Domain}', { "Domain" => Ref('RootDomainName') })).to eq({ 'Fn::Sub' => ['www.${Domain}', { "Domain" => { "Ref" => "RootDomainName" } } ] })
+  end
 end
 
 describe 'Ref' do
