@@ -46,9 +46,10 @@ module SuperStacker
       @root["Parameters"][name] = opts
     end
 
-    def output(name, value, description = nil)
+    def output(name, value, description = nil, export = nil)
       output = { "Value" => value }
       output["Description"] = description unless description.nil?
+      output["Export"] = { "Name" => export } unless export.nil?
 
       @root["Outputs"] ||= {}
       @root["Outputs"][name] = output
