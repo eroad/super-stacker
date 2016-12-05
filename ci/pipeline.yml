@@ -1,0 +1,72 @@
+resource_types:
+
+- name: pull-request
+  type: docker-image
+  source:
+    repository: jtarchie/pr
+
+resources:
+
+- name: super-stacker
+  type: git
+  source:
+    uri: https://github.com/eroad/super-stacker.git
+    branch: master
+    username: {{github-username}}
+    password: {{github-password}}
+
+- name: super-stacker-artifact
+  type: s3
+  source:
+    region_name: ap-southeast-2
+    bucket: eroad-artifact-ap-southeast-2
+    regexp: cli-tools/super-stacker/superstacker-(.*).gem
+    access_key_id: {{aws-access-key}}
+    secret_access_key: {{aws-secret-key}}
+
+- name: pullrequest
+  type: pull-request
+  source:
+    repo: eroad/super-stacker
+    access_token: {{github-token}}
+    username: {{github-username}}
+    password: {{github-password}}
+    every: true
+
+jobs:
+
+- name: validation
+  plan:
+  - get: super-stacker
+  - get: pullrequest
+    trigger: true
+    version: every
+  - put: pullrequest
+    params:
+      status: pending
+      path: pullrequest
+  - task: run-tests
+    file: super-stacker/ci/tasks/test-gem.yml
+    input_mapping: {repo: pullrequest}
+    on_success:
+      put: pullrequest
+      params:
+        status: success
+        path: pullrequest
+    on_failure:
+      put: pullrequest
+      params:
+        status: failure
+        path: pullrequest
+
+- name: build
+  serial: true
+  plan:
+  - aggregate:
+    - get: super-stacker
+      trigger: true
+  - task: build-gem
+    file: super-stacker/ci/tasks/build-gem.yml
+  - put: super-stacker-artifact
+    params:
+      file: artifact/superstacker-*
