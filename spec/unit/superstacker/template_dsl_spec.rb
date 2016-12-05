@@ -73,4 +73,14 @@ describe TemplateDSL, 'when compiled' do
       expect(@template['Outputs']['name']).to eq({'Value' => 'value'})
     end
   end
+
+  context 'with an output declared and exported' do
+    before(:each) do
+      @template = TemplateDSL.new('output "name", "value", "description", Fn.Sub("a")').compile
+    end
+
+    it 'should add the output to the outputs collection' do
+      expect(@template['Outputs']['name']).to eq({'Value' => 'value', 'Description' => 'description', 'Export' => { 'Name' => { 'Fn::Sub' => 'a' } } })
+    end
+  end
 end
